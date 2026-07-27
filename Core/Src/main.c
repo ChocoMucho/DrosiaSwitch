@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "fnd_controller.h"
+#include "ds18b20.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,50 +99,55 @@ int main(void)
   MX_TIM2_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim2);
+  FND_Init();
+  Ds18b20_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //Digit4(1234);
-	//Send_Value_Port(0xC0, 0x01);
-	//Digit4_Temper(10, 50);
-	Send_Value_Port(0x88, 0b0001);
-	Send_Value_Port(0x88, 0b0010);
-	Send_Value_Port(0x88, 0b0100);
-	Send_Value_Port(0x88, 0b1000);
+		//Digit4(1234);
+		//Send_Value_Port(0xC0, 0x01);
 
-	/*if(!HAL_GPIO_ReadPin(PB0_TEMP_SET_UP_GPIO_Port, PB0_TEMP_SET_UP_Pin))
-	{
-	  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
+		Ds18b20_ManualConvert();
+		Digit4_Temper((int)(ds18b20[0].Temperature*10), 5000);
+
+		/*Send_Value_Port(0x88, 0b0001);
+		Send_Value_Port(0x88, 0b0010);
+		Send_Value_Port(0x88, 0b0100);
+		Send_Value_Port(0x88, 0b1000);
+		*/
+		/*if(!HAL_GPIO_ReadPin(PB0_TEMP_SET_UP_GPIO_Port, PB0_TEMP_SET_UP_Pin))
+		{
+		HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
+		}
+		else
+		{
+		HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
+		}
+		HAL_Delay(500);*/
+		/*HAL_GPIO_ReadPin(PB0_TEMP_SET_UP_GPIO_Port, PB0_TEMP_SET_UP_Pin);
+		HAL_Delay(500);*/
+
+		/*HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
+		HAL_Delay(100);
+		HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
+		HAL_Delay(1000);*/
+
+		//printf("HELLO WORLD.%f\r\n", 0.1);
+		/*HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
+		HAL_Delay(1000);*/
+		/*HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 1);
+		HAL_Delay(1000);
+		HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 0);
+		HAL_Delay(100);*/
+		/* USER CODE END WHILE */
+
+	/* USER CODE BEGIN 3 */
 	}
-	else
-	{
-	  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
-	}
-	HAL_Delay(500);*/
-	/*HAL_GPIO_ReadPin(PB0_TEMP_SET_UP_GPIO_Port, PB0_TEMP_SET_UP_Pin);
-	HAL_Delay(500);*/
-
-	/*HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
-	HAL_Delay(100);
-	HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
-	HAL_Delay(1000);*/
-
-	//printf("HELLO WORLD.%f\r\n", 0.1);
-	/*HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
-	HAL_Delay(1000);*/
-	/*HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 1);
-	HAL_Delay(1000);
-	HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 0);
-	HAL_Delay(100);*/
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+	/* USER CODE END 3 */
 }
 
 /**

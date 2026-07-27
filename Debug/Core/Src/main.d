@@ -24,7 +24,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
- ../Core/Src/fnd_controller.h
+ ../Core/Src/fnd_controller.h \
+ C:/Project/Second/second_new/Core/Lib/Inc/ds18b20.h \
+ C:/Project/Second/second_new/Core/Lib/Inc/onewire.h \
+ C:/Project/Second/second_new/Core/Lib/Inc/ds18b20Config.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -52,3 +55,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 ../Core/Src/fnd_controller.h:
+C:/Project/Second/second_new/Core/Lib/Inc/ds18b20.h:
+C:/Project/Second/second_new/Core/Lib/Inc/onewire.h:
+C:/Project/Second/second_new/Core/Lib/Inc/ds18b20Config.h:
