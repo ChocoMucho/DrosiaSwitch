@@ -1,0 +1,11 @@
+../Core/Src/fnd_controller.c:13:6:FND_Init	1
+../Core/Src/fnd_controller.c:48:6:Send	3
+../Core/Src/fnd_controller.c:75:6:Send_Value_Port	1
+../Core/Src/fnd_controller.c:84:6:Digit4_Temper	4
+../Core/Src/fnd_controller.c:101:6:Digit4_Replay_ShowZero	5
+../Core/Src/fnd_controller.c:117:6:Digit4_Replay	1
+../Core/Src/fnd_controller.c:122:6:Digit4	1
+../Core/Src/fnd_controller.c:127:6:digit4showZero	1
+../Core/Src/fnd_controller.c:132:6:Digit4showZero	1
+../Core/Src/fnd_controller.c:138:6:Digit2_Replay	2
+../Core/Src/fnd_controller.c:150:6:Digit2	1
