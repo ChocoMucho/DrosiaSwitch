@@ -1,4 +1,18 @@
-.settings/
-Debug/
-Release/
+# CubeIDE build products; keep local files out of commits.
+/Debug/
+/Release/
+*.o
+*.d
+*.su
+*.cyclo
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+
+# Personal workspace, indexer and debugger settings.
+/.metadata/
+/.settings/*
+!/.settings/org.eclipse.core.resources.prefs
 *.launch
