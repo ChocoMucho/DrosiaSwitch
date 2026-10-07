@@ -21,4 +21,7 @@ typedef enum {
 #define SWITCH_BOUNCE_TIME 100
 #define DEADBAND_GAP 2
 
+#define minTemper 15
+#define maxTemper 40
+
 #endif /* INC_DEFINES_H_ */

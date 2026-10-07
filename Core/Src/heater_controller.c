@@ -45,14 +45,20 @@ uint8_t GetHeaterState()
 void RisingTemper()
 {
 	//ShowTemper(++desiredTemper);
-	++desiredTemper;
+	if (++desiredTemper > maxTemper)
+	{
+		desiredTemper = maxTemper;
+	}
 	isTempEditing = true;
 }
 
 void DescentTemper()
 {
 	//ShowTemper(--desiredTemper);
-	--desiredTemper;
+	if (--desiredTemper < minTemper)
+	{
+		desiredTemper = minTemper;
+	}
 	isTempEditing = true;
 }
 
