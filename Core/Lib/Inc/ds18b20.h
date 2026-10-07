@@ -88,7 +88,10 @@ uint8_t IsConverting(void);
 bool	Ds18b20_Init_Simple(void);
 void 	DS18B20_StartAll_Converting(void);
 void 	CheckConverting(void);
-float 	GetTemper(void);
+// Read once. On failure, the cached temperature and output stay unchanged.
+bool GetTemperResult(float *outTemperature);
+// Cached temperature only; does not perform a sensor read.
+float GetTemper(void);
  
 #endif
 

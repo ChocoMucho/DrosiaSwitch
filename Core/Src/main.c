@@ -30,6 +30,7 @@
 #include "oledController.h"
 
 #include "button_controller.h"
+#include "fault_manager.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,6 +85,28 @@ int _write(int file, char *ptr, int len)
 }
 
 float temper = 0;
+
+static void ProcessSensor(float *outTemperature)
+{
+	if (IsConverting())
+	{
+		CheckConverting();
+		if (IsConverting())
+		{
+			return;
+		}
+	}
+
+	// One report for each actual read attempt.
+	bool readSucceeded = GetTemperResult(outTemperature);
+	FaultReport(readSucceeded);
+
+	if (GetFaultState() != RECHECK)
+	{
+		DS18B20_StartAll_Converting();
+	}
+	// RECHECK keeps this conversion result for one retry on the next tick.
+}
 /* USER CODE END 0 */
 
 /**
@@ -122,43 +145,38 @@ int main(void)
 	MX_USART1_UART_Init();
 	MX_SPI2_Init();
 	/* USER CODE BEGIN 2 */
+	FaultManagerInit();
 	FND_Init(&hspi2);
 	SSD1306_Init();
 	SSD1306_Stopscroll();
-	HAL_TIM_Base_Start_IT(&htim3);
 	Ds18b20_Init_Simple();
 
 	HeaterControllerInit();
+	HAL_TIM_Base_Start_IT(&htim3);
 	ShowOpening();
+	DS18B20_StartAll_Converting();
 
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	uint32_t lastConvertCheckTick = HAL_GetTick();
+	uint32_t lastSensorProcessTick = HAL_GetTick();
 
 	while (1)
 	{
+		ProcessButtonEvents();
 
 		uint32_t now = HAL_GetTick();
-		if ((uint32_t) (now - lastConvertCheckTick) >= 10U)
+		if ((uint32_t) (now - lastSensorProcessTick) >= 10U)
 		{
-			lastConvertCheckTick = now;
-			if (!IsConverting())
-			{
-				DS18B20_StartAll_Converting();
-			}
-			CheckConverting();
+			lastSensorProcessTick = now;
+			ProcessSensor(&temper);
 		}
 
 		//printf("%d \r\n", HAL_GPIO_ReadPin(PB12_START_SW_PIN_GPIO_Port, PB12_START_SW_PIN_Pin));
 
-		ProcessButtonEvents();
-
-		if (!IsConverting())
-		{
-			ProcessHeater();
-		}
+		// Existing heater logic reads the cache; fault integration is pending.
+		ProcessHeater();
 
 		ProcessOled();
 

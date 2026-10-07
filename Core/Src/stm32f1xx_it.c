@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "ds18b20.h"
 #include "fnd_controller.h"
+#include "fault_manager.h"
 #include "button_controller.h"
 #include "defines.h"
 /* USER CODE END Includes */
@@ -265,8 +266,13 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-	if (IsTemperSensorInit() && !IsBusy()) {
-		Digit4_Temper(GetCurrentTemper() * 10);
+	if (!IsBusy()) {
+		FaultState sensorState = GetFaultState();
+		if (sensorState == FIRST_CHECK || sensorState == FAULT) {
+			Digit4_Error();
+		} else {
+			Digit4_Temper((int)(GetCurrentTemper() * 10.0f));
+		}
 	}
 
 	++slideCounter;

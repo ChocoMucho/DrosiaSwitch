@@ -75,6 +75,16 @@ void Send_Value_Port(uint8_t X, uint8_t port) {
 }
 
 static uint8_t m_temperCount = 0;
+
+void Digit4_Error(void)
+{
+	static uint8_t errorDigit = 0U;
+
+	m_temperCount = 0U;
+	Send_Value_Port(0xBF, (uint8_t)(1U << errorDigit));
+	errorDigit = (uint8_t)((errorDigit + 1U) % 4U);
+}
+
 void Digit4_Temper(int temper) {
 	int n1, n2, n3, n4;
 	n1 = (int) temper % 10;

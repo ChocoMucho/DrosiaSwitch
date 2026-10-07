@@ -9,7 +9,7 @@
 #define INC_FND_CONTROLLER_H_
 
 #include "main.h"
-void FND_Init();
+void FND_Init(SPI_HandleTypeDef *hspi);
 
 void Send(uint8_t X);
 
@@ -17,6 +17,7 @@ void Send(uint8_t X);
 void Send_Value_Port(uint8_t X, uint8_t port);
 
 void Digit4_Temper(int temper);
+void Digit4_Error(void);
 
 void Digit4_Replay_ShowZero(int n, int replay, int showZero);
 

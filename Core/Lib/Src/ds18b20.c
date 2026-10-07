@@ -15,7 +15,6 @@ uint16_t	Ds18b20Timeout=0;
 
 // 상태 Getter 변수들
 static uint8_t m_init = 0;
-static uint8_t m_busy = 0;
 static uint8_t m_isConverting = 0;
 
 #if (_DS18B20_USE_FREERTOS==1)
@@ -40,7 +39,6 @@ uint8_t IsTemperSensorInit()
 uint8_t IsBusy()
 {
 	return isBusyLine();
-	//return m_busy;
 }
 
 uint8_t IsConverting()
@@ -110,28 +108,36 @@ bool	Ds18b20_Init(void)
 //###########################################################################################
 void CheckConverting()
 {
-	m_busy = 1;
 	m_isConverting = !DS18B20_AllDone(&OneWire);
-	m_busy = 0;
 }
 
 void DS18B20_StartAll_Converting()
 {
-	m_busy = 1;
 	DS18B20_StartAll(&OneWire);
 	m_isConverting = 1; // CheckConverting() 호출하는 곳에서 0으로.
-	m_busy = 0;
 }
 
-float GetTemper()
+bool GetTemperResult(float *outTemperature)
 {
+	float measuredTemperature;
+	bool readSucceeded = DS18B20_Read(&OneWire, temperSensor.Address,
+			&measuredTemperature);
 
-	Ds18b20Delay(100);
-	m_busy = 1;
-	temperSensor.DataIsValid = DS18B20_Read(&OneWire, temperSensor.Address, &temperSensor.Temperature);
-	m_busy = 0;
+	temperSensor.DataIsValid = readSucceeded;
 
-	return temperSensor.Temperature;
+	if (readSucceeded)
+	{
+		temperSensor.Temperature = measuredTemperature;
+		*outTemperature = measuredTemperature;
+	}
+
+	return readSucceeded;
+}
+
+float GetTemper(void)
+{
+	// Compatibility getter until heater_controller is migrated.
+	return GetCurrentTemper();
 }
 
 bool	Ds18b20_ManualConvert(void)
